@@ -7,6 +7,9 @@ export const People = ( { people, setPeople } ) => {
   //estado para gestionar elId de la persona que se esta editando
   const [editingId, setEditingId] = useState(null);
 
+  // Estado para establecer si se esta editando a u8na persona
+  const [isEditing, setIsEditing] = useState(false);
+
   //estado para almacenar temporalmente los datos de la persona que se esta editando
   const [editedPerson, setEditedPerson] =useState({
     name: '',
@@ -34,6 +37,17 @@ export const People = ( { people, setPeople } ) => {
     setEditedPerson({name:'', role:'',img:''});
   };
 
+  // Metodo para editar a una persona
+  const handleEdit = (id) => {
+    
+    setEditingId(id);
+    setEditingId(true);
+    const personToEdit = people.find(person => person.id === id);
+
+    setEditedPerson({...personToEdit})
+
+  }
+
   return (
     <div>
       <h2 className='text-center my-4'>IT Team</h2>
@@ -48,6 +62,7 @@ export const People = ( { people, setPeople } ) => {
                     name={people.name}
                     img={people.img}
                     role={people.role}
+                    handleEdit={() => handleEdit(people.id)}
                   />
                 </div>
               );
@@ -58,10 +73,23 @@ export const People = ( { people, setPeople } ) => {
       {/* formulario */}
       <div className="container ">
         <h2 className="text-center mt-4">Crear nuevo empleado</h2>
-        <form action="">
+        <form>
           <div>
             <label htmlFor="name">Nombre</label>
-            <input type="text" name="name" value={editedPerson.name} required className="form-control"/>
+            <input type="text" name="name" value={editedPerson.name} onChange={handleChange} required className="form-control"/>
+          </div>
+          <div>
+            <label htmlFor="role">Cargo</label>
+            <input type="text" name="role" value={editedPerson.role} onChange={handleChange} required className="form-control"/>
+          </div>
+          <div>
+            <label htmlFor="img">Enlace de Avatar</label>
+            <input type="text" name="img" value={editedPerson.img} onChange={handleChange} required className="form-control"/>
+          </div>
+          <div className="mt-2 text-center">
+            <button type="submit" className="btn btn-primary">
+              Modificar
+            </button>
           </div>
         </form>
 
